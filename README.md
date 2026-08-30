@@ -1,6 +1,6 @@
 # 🚀 Feedback Analyzer Microservice
 
-A **containerized AI-powered REST API** that analyzes customer feedback and classifies its sentiment. The application is built with **Python and Flask**, containerized with **Docker**, stored in **Amazon Elastic Container Registry (ECR)**, and deployed to **AWS EC2**.
+A containerized AI-powered data science application that analyzes customer feedback using natural language processing and sentiment analysis. The application exposes the machine learning model through a Flask REST API, packages it with Docker, stores the container image in Amazon ECR, and deploys it to AWS EC2.
 
 This project demonstrates an end-to-end workflow for taking an AI/ML application from **local development to a cloud-hosted production-style service**.
 
