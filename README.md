@@ -402,14 +402,6 @@ This represents an end-to-end **AI/ML cloud deployment workflow** and provides p
 
 ---
 
-## 👤 Author
-
-**YOUR NAME**
-
-Master's in Data Science
-University of Colorado Boulder
-
-**Interests:** Cloud Engineering • Machine Learning • AI • Data Science • MLOps
-
 Hopefully you get something like this:
-recent:///4966851ab0dbf90920a30f026a9362d5
+<img width="1705" height="937" alt="Screenshot 2026-08-29 at 5 49 08 PM" src="https://github.com/user-attachments/assets/362b5bbf-9a4f-4f5c-9def-69ff0683d2b6" />
+
