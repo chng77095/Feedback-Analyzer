@@ -1,4 +1,3 @@
-Markdown
 # Feedback Analyzer Microservice
 
 A containerized Python web service that performs sentiment analysis on user feedback. The application is built with Flask, packaged into a Docker container, hosted on Amazon Elastic Container Registry (ECR), and deployed on an AWS EC2 instance.
