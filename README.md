@@ -1,102 +1,415 @@
-# Feedback Analyzer Microservice
+# 🚀 Feedback Analyzer Microservice
 
-A containerized Python web service that performs sentiment analysis on user feedback. The application is built with Flask, packaged into a Docker container, hosted on Amazon Elastic Container Registry (ECR), and deployed on an AWS EC2 instance.
+A **containerized AI-powered REST API** that analyzes customer feedback and classifies its sentiment. The application is built with **Python and Flask**, containerized with **Docker**, stored in **Amazon Elastic Container Registry (ECR)**, and deployed to **AWS EC2**.
+
+This project demonstrates an end-to-end workflow for taking an AI/ML application from **local development to a cloud-hosted production-style service**.
 
 ---
 
-## Architecture Overview
+## 📌 Project Overview
 
-```text
-[ Client / Terminal ] 
-        │ (POST /analyze)
-        ▼
-[ AWS EC2 Instance ] ── Port 8080
-        │
-        ▼
-[ Docker Container ] ── (Python / Flask API)
-API Framework: Flask (Python)
+Customer feedback can provide valuable insight into user satisfaction, but manually analyzing large volumes of text is inefficient.
 
-Containerization: Docker
+The Feedback Analyzer provides an API that accepts user feedback and returns a sentiment classification such as **POSITIVE** or **NEGATIVE**.
 
-Container Registry: AWS ECR (us-east-1)
+### Example
 
-Cloud Infrastructure: AWS EC2 (Amazon Linux 2023, us-east-2)
+**Input**
 
-Project Structure
-Plaintext
-feedback-analyzer/
-├── .gitignore                    # Prevents sensitive files (.pem) from entering source control
-├── Dockerfile                    # Container configuration file
-├── README.md                     # Project documentation
-├── app.py                        # Main Flask application logic
-└── requirements.txt              # Python dependencies
-Getting Started Locally
-Prerequisites
-Python 3.9+
-
-Docker Installed and running
-
-Running the App Locally
-Clone the repository:
-
-Bash
-git clone [https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git)
-cd feedback-analyzer
-Build the Docker image:
-
-Bash
-docker build -t feedback-analyzer .
-Run the container:
-
-Bash
-docker run -d -p 8080:8080 --name analyzer feedback-analyzer
-Test the API endpoint:
-
-Bash
-curl -X POST http://localhost:8080/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"feedback": "This service is great!"}'
-AWS Deployment Architecture
-1. Push Image to Amazon ECR
-Authenticate Docker with your ECR registry and push the image:
-
-Bash
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
-docker tag feedback-analyzer:latest <ACCOUNT_ID>[.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest](https://.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest)
-docker push <ACCOUNT_ID>[.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest](https://.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest)
-2. AWS EC2 Configuration
-Security Group Inbound Rules:
-
-Port 22 (SSH): Accessible from operator IP.
-
-Port 8080 (Custom TCP): Public access (0.0.0.0/0) for incoming API requests.
-
-IAM Role: Attached AmazonEC2ContainerRegistryReadOnly policy to allow the EC2 instance to pull images directly from Amazon ECR without embedding permanent credentials.
-
-3. Running on EC2
-Inside the EC2 SSH terminal:
-
-Bash
-# Pull and execute container from ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
-docker run -d -p 8080:8080 --restart unless-stopped --name analyzer <ACCOUNT_ID>[.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest](https://.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest)
-API Usage
-POST /analyze
-Analyzes the sentiment of a given text string.
-
-Request Body:
-
-JSON
+```json
 {
   "feedback": "This service is great!"
 }
-Response (200 OK):
+```
 
-JSON
+**Output**
+
+```json
 {
   "feedback": "This service is great!",
   "sentiment": "POSITIVE"
 }
+```
+
+---
+
+## ☁️ Architecture
+
+```text
+                    Client
+                      │
+                      │ POST /analyze
+                      ▼
+              ┌─────────────────┐
+              │     AWS EC2     │
+              │    Port 8080    │
+              └────────┬────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ Docker Container│
+              │                 │
+              │ Python + Flask  │
+              │ Sentiment Model │
+              └────────┬────────┘
+                       ▲
+                       │ Pull Docker Image
+                       │
+              ┌────────┴────────┐
+              │     AWS ECR     │
+              │ Docker Registry │
+              └─────────────────┘
+```
+
+### Deployment Flow
+
+```text
+Develop
+   ↓
+Build Docker Image
+   ↓
+Push Image to AWS ECR
+   ↓
+EC2 Pulls Image
+   ↓
+Docker Runs Container
+   ↓
+REST API Available on Port 8080
+```
+
+---
+
+## 🛠️ Technologies
+
+| Category              | Technology          |
+| --------------------- | ------------------- |
+| Programming Language  | Python              |
+| API Framework         | Flask               |
+| AI / Machine Learning | Sentiment Analysis  |
+| Containerization      | Docker              |
+| Cloud Platform        | Amazon Web Services |
+| Compute               | AWS EC2             |
+| Container Registry    | AWS ECR             |
+| Cloud Security        | AWS IAM             |
+| Operating System      | Amazon Linux 2023   |
+| API Format            | REST / JSON         |
+
+---
+
+## 💡 Key Features
+
+* 🤖 AI-powered sentiment classification
+* 🌐 REST API for real-time predictions
+* 🐳 Fully containerized with Docker
+* ☁️ Deployed to AWS EC2
+* 📦 Docker image hosted in Amazon ECR
+* 🔐 IAM-based authentication for ECR access
+* 🔄 Automatic Docker container restart
+* 📡 JSON-based API requests and responses
+* 🧩 Simple architecture that can be extended into a larger ML service
+
+---
+
+## 🧠 AI / Machine Learning Component
+
+The application processes incoming text and generates a sentiment prediction.
+
+Supported sentiment output includes:
+
+```text
+POSITIVE
+NEGATIVE
+```
+
+The machine learning component is integrated directly into the Flask API, allowing predictions to be generated through an HTTP request rather than requiring users to interact with a notebook or local Python script.
+
+This demonstrates how a machine learning model can be transformed into a **deployable cloud application**.
+
+---
+
+## 🐳 Docker Implementation
+
+The application is packaged as a Docker image so that the same environment can be used across development and deployment.
+
+### Build the Image
+
+```bash
+docker build -t feedback-analyzer .
+```
+
+### Run Locally
+
+```bash
+docker run -d \
+  -p 8080:8080 \
+  --name analyzer \
+  feedback-analyzer
+```
+
+The API is then available at:
+
+```text
+http://localhost:8080
+```
+
+---
+
+## 🧪 API Usage
+
+### `POST /analyze`
+
+Analyzes the sentiment of submitted feedback.
+
+### Request
+
+```json
+{
+  "feedback": "This service is great!"
+}
+```
+
+### Response
+
+```json
+{
+  "feedback": "This service is great!",
+  "sentiment": "POSITIVE"
+}
+```
+
+### Example cURL Request
+
+```bash
+curl -X POST http://localhost:8080/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"feedback": "This service is great!"}'
+```
+
+---
+
+## ☁️ AWS Deployment
+
+The application is deployed using an AWS-based container workflow.
+
+### 1. Amazon ECR
+
+The Docker image is pushed to **Amazon Elastic Container Registry**.
+
+```bash
+aws ecr get-login-password --region us-east-1 | \
+docker login \
+--username AWS \
+--password-stdin \
+<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+```
+
+Tag the image:
+
+```bash
+docker tag feedback-analyzer:latest \
+<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest
+```
+
+Push the image:
+
+```bash
+docker push \
+<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest
+```
+
+---
+
+### 2. AWS EC2
+
+An **Amazon Linux 2023 EC2 instance** hosts the Docker container.
+
+The EC2 security group is configured to allow:
+
+```text
+Port 22     → SSH administration
+Port 8080   → API traffic
+```
+
+The container is launched with:
+
+```bash
+docker run -d \
+  -p 8080:8080 \
+  --restart unless-stopped \
+  --name analyzer \
+  <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/feedback-analyzer:latest
+```
+
+The `--restart unless-stopped` option allows Docker to automatically restart the application if the container stops or the server reboots.
+
+---
+
+## 🔐 Cloud Security
+
+The EC2 instance uses an **IAM role** with the:
+
+```text
+AmazonEC2ContainerRegistryReadOnly
+```
+
+policy.
+
+This allows the EC2 instance to pull the Docker image from ECR without storing long-lived AWS access keys directly on the server.
+
+### Security Configuration
+
+```text
+EC2
+ │
+ ├── IAM Role
+ │     └── ECR Read-Only Access
+ │
+ └── Security Group
+       ├── SSH : 22
+       └── API : 8080
+```
+
+This approach demonstrates the use of **AWS identity and access management principles** rather than embedding permanent credentials into the application.
+
+---
+
+## 📂 Project Structure
+
+```text
+feedback-analyzer/
+│
+├── .gitignore
+├── Dockerfile
+├── README.md
+├── app.py
+└── requirements.txt
+```
+
+### File Descriptions
+
+| File               | Purpose                                                   |
+| ------------------ | --------------------------------------------------------- |
+| `app.py`           | Flask API and sentiment-analysis logic                    |
+| `Dockerfile`       | Defines the application container                         |
+| `requirements.txt` | Python dependencies                                       |
+| `.gitignore`       | Prevents sensitive/unnecessary files from being committed |
+| `README.md`        | Project documentation                                     |
+
+---
+
+## 💻 Run Locally
+
+### Prerequisites
+
+* Python 3.9+
+* Docker
+* AWS CLI *(only required for AWS deployment)*
+
+### Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+cd feedback-analyzer
+```
+
+### Build Docker Image
+
+```bash
+docker build -t feedback-analyzer .
+```
+
+### Start Container
+
+```bash
+docker run -d \
+  -p 8080:8080 \
+  --name analyzer \
+  feedback-analyzer
+```
+
+### Test the API
+
+```bash
+curl -X POST http://localhost:8080/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"feedback": "This service is great!"}'
+```
+
+---
+
+## 📊 Skills Demonstrated
+
+### Cloud Engineering
+
+* AWS EC2
+* Amazon ECR
+* AWS IAM
+* Security Groups
+* Cloud-based application deployment
+
+### DevOps
+
+* Docker containerization
+* Container image management
+* Application deployment workflow
+* Automated container restart
+* Linux server administration
+
+### AI / Machine Learning
+
+* Natural language processing
+* Sentiment classification
+* Model inference
+* ML model integration into a REST API
+
+### Software Engineering
+
+* Python
+* Flask
+* REST APIs
+* JSON
+* Dependency management
+* Environment isolation
+
+---
+
+## 🔮 Future Improvements
+
+Potential next steps for the project include:
+
+* [ ] Add HTTPS using an AWS Application Load Balancer
+* [ ] Add CloudWatch monitoring and logging
+* [ ] Add automated CI/CD with GitHub Actions
+* [ ] Add unit and integration tests
+* [ ] Add multiple sentiment categories
+* [ ] Add batch feedback analysis
+* [ ] Store analyzed feedback in a database
+* [ ] Add authentication and API keys
+* [ ] Deploy using AWS ECS instead of EC2
+* [ ] Add model performance monitoring
+
+---
+
+## 🎯 What This Project Demonstrates
+
+This project goes beyond developing a machine learning model in a notebook.
+
+It demonstrates the ability to:
+
+> **Build an AI application → package it with Docker → publish it to a container registry → configure cloud infrastructure → securely deploy it to AWS → expose the model through a REST API.**
+
+This represents an end-to-end **AI/ML cloud deployment workflow** and provides practical experience across **cloud engineering, DevOps, machine learning, and backend development**.
+
+---
+
+## 👤 Author
+
+**YOUR NAME**
+
+Master's in Data Science
+University of Colorado Boulder
+
+**Interests:** Cloud Engineering • Machine Learning • AI • Data Science • MLOps
 
 Hopefully you get something like this:
 recent:///4966851ab0dbf90920a30f026a9362d5
