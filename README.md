@@ -110,21 +110,26 @@ REST API Available on Port 8080
 
 ---
 
-## 🧠 AI / Machine Learning Component
+## 🧠 AI / Machine Learning
 
-The application processes incoming text and generates a sentiment prediction.
+The application uses a pretrained DistilBERT transformer model fine-tuned for
+sentiment classification.
 
-Supported sentiment output includes:
+The model analyzes incoming customer feedback and returns:
 
-```text
-POSITIVE
-NEGATIVE
-```
+- POSITIVE
+- NEGATIVE
 
-The machine learning component is integrated directly into the Flask API, allowing predictions to be generated through an HTTP request rather than requiring users to interact with a notebook or local Python script.
+Each prediction also includes a confidence score.
 
-This demonstrates how a machine learning model can be transformed into a **deployable cloud application**.
+Example:
 
+```json
+{
+  "feedback": "This service is amazing!",
+  "sentiment": "POSITIVE",
+  "confidence": 0.9998
+}
 ---
 
 ## 🐳 Docker Implementation
