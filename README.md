@@ -14,22 +14,15 @@ The Feedback Analyzer provides an API that accepts user feedback and returns a s
 
 ### Example
 
-**Input**
-
-```json
-{
-  "feedback": "This service is great!"
-}
-```
-
 **Output**
 
-```json
 {
-  "feedback": "This service is great!",
+  "confidence_level": "High",
+  "confidence_percentage": "99.99%",
+  "confidence_score": 0.9999,
+  "feedback": "This service was fantastic!",
   "sentiment": "POSITIVE"
 }
-```
 
 ---
 
@@ -177,7 +170,10 @@ Analyzes the sentiment of submitted feedback.
 
 ```json
 {
-  "feedback": "This service is great!",
+  "confidence_level": "High",
+  "confidence_percentage": "99.99%",
+  "confidence_score": 0.9999,
+  "feedback": "This service was fantastic!",
   "sentiment": "POSITIVE"
 }
 ```
@@ -335,9 +331,13 @@ docker run -d \
 ### Test the API
 
 ```bash
-curl -X POST http://localhost:8080/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"feedback": "This service is great!"}'
+{
+  "confidence_level": "High",
+  "confidence_percentage": "99.99%",
+  "confidence_score": 0.9999,
+  "feedback": "This service was fantastic!",
+  "sentiment": "POSITIVE"
+}
 ```
 
 ---
