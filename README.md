@@ -408,5 +408,5 @@ This represents an end-to-end **AI/ML cloud deployment workflow** and provides p
 ---
 
 Hopefully you get something like this:
-<img width="1705" height="937" alt="Screenshot 2026-08-29 at 5 49 08 PM" src="https://github.com/user-attachments/assets/362b5bbf-9a4f-4f5c-9def-69ff0683d2b6" />
+<img width="1149" height="325" alt="feedback" src="https://github.com/user-attachments/assets/d4904ae5-d91e-4e07-b5bb-cab3bf29a520" />
 
